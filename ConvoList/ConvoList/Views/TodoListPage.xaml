@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ConvoList.Views.TodoListPage"
+             xmlns:todoitem="clr-namespace:ConvoList.ContentViews"
+             xmlns:model="clr-namespace:ConvoList.Models"
+             xmlns:viewmodels="clr-namespace:ConvoList.ViewModels"
+             x:DataType="viewmodels:TodoListPageViewModel"
+             >
+    <Grid VerticalOptions="Fill" RowDefinitions="*, Auto">
+        <ListView ItemsSource="{Binding Todos}"
+                  Grid.Row="0">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="model:TodoItem">
+                    <ViewCell>
+                        <todoitem:TodoItemView />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Grid Grid.Row="1" ColumnDefinitions="*,*">
+            <Border  HorizontalOptions="Center"
+               Grid.Column="0"
+               Padding="10">
+                <Border.Content>
+                    <HorizontalStackLayout Spacing="10" >
+                        <Grid RowSpacing="5" MinimumWidthRequest="300">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Entry Grid.Row="0" Placeholder="Title" Text="{Binding NewTodoName}" />
+                            <Editor Grid.Row="1" HeightRequest="100" AutoSize="TextChanges" MaxLength="200" Placeholder="Description" Text="{Binding NewTodoDescription}" />
+                        </Grid>
+                        <Button Text="Add" Command="{Binding AddTodoCommand}"
+                        WidthRequest="100" MaximumHeightRequest="50"/>
+                    </HorizontalStackLayout>
+                </Border.Content>
+            </Border>
+            <Border  HorizontalOptions="Center"
+               Grid.Column="1"
+               Padding="10">
+                <Border.Content>
+                    <HorizontalStackLayout Spacing="10" >
+                        <Button Text="Delete All" Command="{Binding DeleteAllCommand}"
+                                WidthRequest="100" MaximumHeightRequest="50"/>
+                    </HorizontalStackLayout>
+                </Border.Content>
+            </Border>
+        </Grid>
+        
+        
+    </Grid>
+</ContentPage>

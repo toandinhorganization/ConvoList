@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="ConvoList.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:ConvoList.ViewModels"
+    x:Name="AppShellInstance"
+    xmlns:views="clr-namespace:ConvoList.Views"
+    x:DataType="local:AppShellViewModel"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.BackgroundColor="{StaticResource Gray100}"
+    Shell.NavBarIsVisible="True">
+    <!-- ToolbarItem for right-aligned button-->
+    <Shell.ToolbarItems>
+        <ToolbarItem Text="Users"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding NavigateToUsersCommand}" />
+        <ToolbarItem Text="Settings"
+                     Order="Primary"
+                     Priority="1"
+                     Command="{Binding NavigateToSettingsCommand}" />
+    </Shell.ToolbarItems> 
+
+    <!-- Main App Content -->
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems"
+                
+                >
+        <ShellContent Title="Home"
+                      Icon="monkey.png"
+                      ContentTemplate="{DataTemplate views:HomePage}" />
+        <ShellContent Title="Settings"
+                      Icon="elephant.png"
+                      ContentTemplate="{DataTemplate views:Settings}" />
+
+    </FlyoutItem>
+</Shell>

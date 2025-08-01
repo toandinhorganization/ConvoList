@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:modelViews="clr-namespace:ConvoList.ViewModels"
+             xmlns:controls="clr-namespace:ConvoList.ContentViews"
+             xmlns:models="clr-namespace:ConvoList.Models"
+             x:Class="ConvoList.Views.HomePage"
+             xmlns:services="clr-namespace:ConvoList.Services"
+             Title="HomePage">
+    <ContentPage.BindingContext>
+        <modelViews:HomePageViewModel>
+            <x:Arguments>
+                <services:TodoService />
+            </x:Arguments>
+        </modelViews:HomePageViewModel>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Grid" x:Key="mainGridStyle">
+                <Setter Property="Padding" Value="5 5 5 10" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <OnPlatform x:TypeArguments="Grid">
+        <On Platform="WinUI">
+            <Grid ColumnDefinitions="*,2*">
+                <Border Grid.Column="0">
+                    <Border.Content>
+                        <Grid RowDefinitions="30,*">
+                            <Label Text="Active Todo List" Grid.Row="0" 
+                                   HorizontalOptions="Center" Margin="2" 
+                                   TextColor="{StaticResource Primary}"
+                                   FontAttributes="Bold"
+                                   FontSize="15"/>
+                            <Border
+                                Grid.Row="1">
+                                <Border.Content>
+                                    <controls:LoadingContentView
+                                    IsLoading="{Binding IsLoading}"
+                                    LoadingText="Loading Task..."
+                                    x:Name="ParentGrid"
+                                Padding="0"
+                                    >
+                                        <CollectionView ItemsSource="{Binding TodoItems}"  
+                                            VerticalScrollBarVisibility="Default"  
+                                            HeightRequest="{Binding Source={x:Reference ParentGrid}, Path=Height}"
+                                            ItemSizingStrategy="MeasureAllItems">
+                                            <CollectionView.EmptyView>
+                                                <Label Text="No tasks available." 
+                                           HorizontalOptions="Center" 
+                                           VerticalOptions="Center" />
+                                            </CollectionView.EmptyView>
+                                            <CollectionView.ItemsLayout>
+                                                <LinearItemsLayout Orientation="Vertical" />
+                                            </CollectionView.ItemsLayout>
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate x:DataType="models:TodoItem">
+                                                    <controls:TodoItemView TodoItem="{Binding .}">
+                                                        <controls:TodoItemView.GestureRecognizers>
+                                                            <DragGestureRecognizer DragStarting="DragGestureRecognizer_DragStarting"/>
+                                                        </controls:TodoItemView.GestureRecognizers>
+                                                    </controls:TodoItemView>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                    </controls:LoadingContentView>
+                                </Border.Content>
+                            </Border>
+
+                        </Grid>
+
+                    </Border.Content>
+                </Border>
+                <!-- Main Content Page
+                <Border Grid.Column="1">
+                    <Grid RowDefinitions="50,*" Style="{StaticResource mainGridStyle}">
+                        <Label FontSize="Title" Grid.Row="0" Text="This is a title todo list text"/>
+                        <Grid Grid.Row="1">
+                            
+                        </Grid>
+                    </Grid>
+                </Border> -->
+            </Grid>
+        </On>
+    </OnPlatform>
+</ContentPage>
